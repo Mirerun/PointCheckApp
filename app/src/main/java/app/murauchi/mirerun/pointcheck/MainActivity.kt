@@ -1,5 +1,6 @@
 package app.murauchi.mirerun.pointcheck
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import io.realm.Realm
@@ -23,6 +24,9 @@ class MainActivity : AppCompatActivity() {
             val amount : String = amountEditText.text.toString()
             val limit : Int = yearEditText.text.toString().toInt() * 10000 + monthEditText.text.toString().toInt() * 100 + dayEditText.text.toString().toInt()
             save(type,amount,limit)
+
+            val toRecyclerViewActivityIntent = Intent(this, RecyclerViewActivity::class.java)
+            startActivity(toRecyclerViewActivityIntent)
         }
     }
 
