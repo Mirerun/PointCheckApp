@@ -13,12 +13,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        //画面が作られたときに1回だけ実行
-
-
-//Integer.parseInt(yearEditText.text.toString()) 数値型に変える（文字列型
-
-        //yearEditText.text.toString().toInt()
+        //このスペースは画面が作られたときに1回だけ実行
+        //Integer.parseInt(yearEditText.text.toString()) 数値型に変える（文字列型)
         saveButton.setOnClickListener {
             val type: String = typeEditText.text.toString()
             val amount : String = amountEditText.text.toString()
