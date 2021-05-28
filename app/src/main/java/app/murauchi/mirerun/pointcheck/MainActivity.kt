@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import io.realm.Realm
+import io.realm.RealmResults
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -13,6 +14,13 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        //realmのデータ消す
+        //val pointList = readAll()
+        //realm.executeTransaction{
+        //    pointList.deleteAllFromRealm()
+        //}
+
         //このスペースは画面が作られたときに1回だけ実行
         //Integer.parseInt(yearEditText.text.toString()) 数値型に変える（文字列型)
         saveButton.setOnClickListener {
@@ -29,6 +37,10 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         realm.close()
+    }
+
+    fun readAll(): RealmResults<Record> { //試しに書いたデータを消す用
+        return realm.where(Record::class.java).findAll()
     }
 
     fun read(): Record? {

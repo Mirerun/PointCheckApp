@@ -1,5 +1,6 @@
 package app.murauchi.mirerun.pointcheck
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -21,6 +22,11 @@ class RecyclerViewActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
 
+        addButton.setOnClickListener {
+            val toMainActivityIntent = Intent(this, MainActivity::class.java)
+            startActivity(toMainActivityIntent)
+        }
+
         //adapter.addAll()
     }
 
@@ -36,4 +42,5 @@ class RecyclerViewActivity : AppCompatActivity() {
     fun readAll(): RealmResults<Record> {
         return realm.where(Record::class.java).findAll().sort("limit")
     }
+
 }
