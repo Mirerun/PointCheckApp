@@ -42,6 +42,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.3.0'
     implementation 'com.google.android.material:material:1.3.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    //implementation 'com.android.support:support-compat:28.0.0' //通知設定？
     //noinspection GradleCompatible
     //implementation 'com.android.support:recyclerview-v7:29.1.0'
     //noinspection GradleCompatible
