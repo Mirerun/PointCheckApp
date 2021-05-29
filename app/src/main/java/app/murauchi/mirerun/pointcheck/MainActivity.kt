@@ -1,6 +1,9 @@
 package app.murauchi.mirerun.pointcheck
 
 import android.annotation.TargetApi
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
 import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
@@ -30,6 +33,40 @@ class MainActivity : AppCompatActivity() {
             pointList.deleteAllFromRealm()
         }*/
 
+        //通知を出す
+        val record: List<Record>? = readAll()
+
+        @TargetApi(Build.VERSION_CODES.O)
+        if (record != null) {
+            for (i in record.indices) {
+                if (record[i].limit < (today().toInt() - 7)) {//1週間前だったら
+                    val notification = NotificationCompat.Builder(this, "default")
+                        .setSmallIcon(R.drawable.icon_v1)
+                        .setContentTitle(record[i].type)
+                        .setContentText("${record[i].amount}の失効期限が迫っています！")
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                        .build()
+
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { //channelを作成
+                        val name = "title"
+                        val descriptionText = "text"
+                        val importance = NotificationManager.IMPORTANCE_DEFAULT
+                        val channel = NotificationChannel("default", name, importance).apply {
+                            description = descriptionText
+                        }
+                        val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+                        manager.createNotificationChannel(channel)
+                    }
+
+                    with(NotificationManagerCompat.from(this)) {
+                        // notificationId is a unique int for each notification that you must define
+                        notify(1, notification)
+                    }
+
+                }
+            }
+        }
+
         //Integer.parseInt(yearEditText.text.toString()) 数値型に変える（文字列型)
         saveButton.setOnClickListener {
             val type: String = typeEditText.text.toString()
@@ -49,7 +86,7 @@ class MainActivity : AppCompatActivity() {
         realm.close()
     }
 
-    fun readAll(): RealmResults<Record> { //試しに書いたデータを消す用
+    fun readAll(): RealmResults<Record> {
         return realm.where(Record::class.java).findAll()
     }
 
@@ -67,5 +104,13 @@ class MainActivity : AppCompatActivity() {
             newData.amount = amount
             newData.limit = limit
         }
+    }
+
+    @TargetApi(Build.VERSION_CODES.O)
+    fun today(): String {
+        val current = LocalDateTime.now()
+        val formatter = DateTimeFormatter.ofPattern("yyyyMMdd")
+        Log.d("today", current.format(formatter).toString())
+        return current.format(formatter) //ここで初めて年月日
     }
 }
