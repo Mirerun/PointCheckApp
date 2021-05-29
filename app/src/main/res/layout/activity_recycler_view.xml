@@ -25,7 +25,7 @@
         android:clickable="true"
         android:scaleType="center"
         android:scrollbarSize="20dp"
-        app:backgroundTint="#FDE722"
+        app:backgroundTint="#FFC107"
         app:fabCustomSize="80dp"
         app:fabSize="normal"
         app:layout_constraintBottom_toBottomOf="parent"

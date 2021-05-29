@@ -6,6 +6,7 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.SystemClock
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -24,10 +25,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main) //このスペースは画面が作られたときに1回だけ実行
 
         //realmのお試しデータ消す
-        //val pointList = readAll()
-        //realm.executeTransaction{
-          //  pointList.deleteAllFromRealm()
-        //}
+        /*val pointList = readAll()
+        realm.executeTransaction{
+            pointList.deleteAllFromRealm()
+        }*/
 
         //Integer.parseInt(yearEditText.text.toString()) 数値型に変える（文字列型)
         saveButton.setOnClickListener {
@@ -41,24 +42,6 @@ class MainActivity : AppCompatActivity() {
             val toRecyclerViewActivityIntent = Intent(this, RecyclerViewActivity::class.java)
             startActivity(toRecyclerViewActivityIntent)
         }
-
-        @TargetApi(Build.VERSION_CODES.O)
-        fun push() {
-            val record: Record? = read() //一番上findfirstはおそらく一番早く期限が切れるもの、毎日アプリを開くとして(自動機能削除はないけど)
-            if (record != null) {
-                if (record.limit < (today().toInt() - 7)) { //1週間前だったら
-                    val notification = NotificationCompat.Builder(this, "default")
-                        .setSmallIcon(R.drawable.ic_launcher_background)
-                        .setContentTitle(record.type)
-                        .setContentText("${record.amount}の失効期限が迫っています！")
-                        .build()
-                    //notificationManager.notify(SystemClock.uptimeMillis().toInt(), notification)
-
-                    val manager = NotificationManagerCompat.from(this)
-                    manager.notify(1, notification)
-                }
-            }
-        }
     }
 
     override fun onDestroy() {
@@ -66,17 +49,9 @@ class MainActivity : AppCompatActivity() {
         realm.close()
     }
 
-    @TargetApi(Build.VERSION_CODES.O)
-    fun today(): String {
-        val current = LocalDateTime.now()
-        val formatter = DateTimeFormatter.ofPattern("yyyyMMdd")
-        return current.format(formatter)
-    }
-
     fun readAll(): RealmResults<Record> { //試しに書いたデータを消す用
         return realm.where(Record::class.java).findAll()
     }
-
 
     fun read(): Record? {
         return realm.where(Record::class.java).findFirst()
