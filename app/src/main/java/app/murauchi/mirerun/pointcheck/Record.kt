@@ -9,7 +9,7 @@ open class Record(
         open var type: String = "",
         open var amount: String = "",
         open var limit: Int = 0,
-        open var limitDate: LocalDate
+        open var limitDate: Date = Date()
 ) : RealmObject() {
         annotation class Primarykey
 }

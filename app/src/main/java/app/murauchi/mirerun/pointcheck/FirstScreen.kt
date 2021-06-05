@@ -8,15 +8,18 @@ import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import io.realm.Realm
 import io.realm.RealmResults
 import kotlinx.android.synthetic.main.activity_first_screen.*
-import java.time.LocalDate
+import java.text.SimpleDateFormat
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
+import java.util.*
+import java.time.LocalDate as LocalDate1
 
 class FirstScreen : AppCompatActivity() {
 
@@ -26,14 +29,27 @@ class FirstScreen : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_first_screen)
 
+        //お試しデータ削除
+        /*val pointList = readAll()
+        realm.executeTransaction{
+            pointList.deleteAllFromRealm()
+        }*/
+
+        /*pointList.forEach{
+            Log.d("debug", it.limitDate.toString())
+        }*/
+
         //アプリを開いたときに通知を出す
         val record: List<Record>? = readAll()
+        val today = LocalDate1.now() //現在の日付を取得
 
         @TargetApi(Build.VERSION_CODES.O)
         if (record != null) {
             for (i in record.indices) {
-                //memo: record[i].limit < (today().toInt() - 7
-                if (ChronoUnit.DAYS.between(record[i].limitDate, LocalDate.now()) >= 7) {//1週間差があったら
+                val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.JAPAN)
+                val dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+                val target = LocalDate1.parse(sdf.format(record[i].limitDate), dtf) //Date型のlimitDateをLocalDateに変換
+                if ((target.minusDays(7)).isBefore(today)) {// 期限の1週間前が今日より前だったら
                     val notification = NotificationCompat.Builder(this, "default")
                         .setSmallIcon(R.drawable.icon_v1)
                         .setContentTitle(record[i].type)
@@ -53,7 +69,7 @@ class FirstScreen : AppCompatActivity() {
                     }
 
                     with(NotificationManagerCompat.from(this)) {
-                        // notificationId is a unique int for each notification that you must define
+                            // notificationId is a unique int for each notification that you must define
                         notify(1, notification)
                     }
 
@@ -71,6 +87,11 @@ class FirstScreen : AppCompatActivity() {
             val toRecyclerViewActivityIntent = Intent(this, RecyclerViewActivity::class.java)
             startActivity(toRecyclerViewActivityIntent)
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        realm.close()
     }
 
     /*@TargetApi(Build.VERSION_CODES.O)

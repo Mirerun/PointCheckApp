@@ -8,6 +8,10 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import io.realm.OrderedRealmCollection
 import io.realm.RealmRecyclerViewAdapter
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class RecyclerViewAdapter(
     private val context: Context,
@@ -28,6 +32,12 @@ class RecyclerViewAdapter(
             holder.typeText.text = record.type
             holder.amountText.text = record.amount
             holder.limitText.text = record.limit.toString()
+            val df = SimpleDateFormat("yyyy-MM-dd")
+            val target = LocalDate.parse(df.format(record.limitDate) ,DateTimeFormatter.ofPattern("uuuu-MM-dd") )//DateからStringからLocalDate
+            //val localYear = target.year
+            holder.limitYearText.text = target.year.toString() //IntからString
+            holder.limitMonthText.text = (target.monthValue - 1).toString()
+            holder.limitDayText.text = target.dayOfMonth.toString()
 
         }
 
@@ -35,6 +45,9 @@ class RecyclerViewAdapter(
             val typeText: TextView = view.findViewById(R.id.typeTextView)
             val amountText: TextView = view.findViewById(R.id.amountTextView)
             val limitText: TextView = view.findViewById(R.id.limitTextView)
+            val limitYearText: TextView = view.findViewById(R.id.limitYearView)
+            val limitMonthText: TextView = view.findViewById(R.id.limitMonthView)
+            val limitDayText: TextView = view.findViewById(R.id.limitDayView)
         }
 
 }

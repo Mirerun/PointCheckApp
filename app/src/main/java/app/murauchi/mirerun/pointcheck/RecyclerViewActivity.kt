@@ -39,6 +39,11 @@ class RecyclerViewActivity : AppCompatActivity() {
         }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        realm.close()
+    }
+
     /*fun create(type: String, amount: String, limit: Int) {
         realm.executeTransaction {
             val record = it.createObject(Record::class.java)
