@@ -92,7 +92,7 @@ class MainActivity : AppCompatActivity() {
         return date
     }*/
 
-    private fun showDatePicker() {
+    /*private fun showDatePicker() {
         val datePickerDialog = DatePickerDialog(
             this,
             DatePickerDialog.OnDateSetListener() { view, year, month, dayOfMonth->
@@ -102,5 +102,5 @@ class MainActivity : AppCompatActivity() {
             5,
             1)
         datePickerDialog.show()
-    }
+    }*/
 }
