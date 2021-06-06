@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import io.realm.Realm
 import io.realm.RealmResults
@@ -42,7 +43,8 @@ class MainActivity : AppCompatActivity() {
             //date.format(formatter)
             //val limitDate : Date = stringToDate("${yearEditText.text}${month}${day}")
             //val limitDate : Date = SimpleDateFormat("yyyyMMdd").parse("${yearEditText.text}${month}${day}")
-            val limitDate : Date = GregorianCalendar(yearEditText.text.toString().toInt(), monthEditText.text.toString().toInt(), dayEditText.text.toString().toInt()).time
+            val newmonth = monthEditText.text.toString().toInt() -1
+            val limitDate : Date = GregorianCalendar(yearEditText.text.toString().toInt(), newmonth, dayEditText.text.toString().toInt()).time
             save(type, amount, limit, limitDate)
 
             val toRecyclerViewActivityIntent = Intent(this, RecyclerViewActivity::class.java)

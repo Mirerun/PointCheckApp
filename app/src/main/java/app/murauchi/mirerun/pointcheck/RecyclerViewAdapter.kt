@@ -36,7 +36,7 @@ class RecyclerViewAdapter(
             val target = LocalDate.parse(df.format(record.limitDate) ,DateTimeFormatter.ofPattern("uuuu-MM-dd") )//DateからStringからLocalDate
             //val localYear = target.year
             holder.limitYearText.text = target.year.toString() //IntからString
-            holder.limitMonthText.text = (target.monthValue - 1).toString()
+            holder.limitMonthText.text = (target.monthValue).toString()
             holder.limitDayText.text = target.dayOfMonth.toString()
 
         }
