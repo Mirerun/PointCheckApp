@@ -1,6 +1,7 @@
 package app.murauchi.mirerun.pointcheck
 
 import android.annotation.TargetApi
+import android.app.AlertDialog
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
@@ -29,6 +30,17 @@ class RecyclerViewActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recycler_view)
+
+        val customTitle = getLayoutInflater().inflate(R.layout.customtitle, null, false)
+
+        AlertDialog.Builder(this)
+            .setCustomTitle(customTitle)
+            .setMessage("ポイントの有効期限を追加しましょう！\n 期限が1週間をきると通知されます。")
+            .setPositiveButton("追加"){ dialog, which ->
+                val toMainActivityIntent = Intent(this, MainActivity::class.java)
+                startActivity(toMainActivityIntent)
+            }
+            .show()
 
         val pointList = readAll()
         //アプリを開いたときに通知を出す

@@ -7,7 +7,7 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_pointcheck"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/icon_percent"
+        android:roundIcon="@mipmap/ic_pointcheck_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.PointCheck">
         <activity android:name=".RecyclerViewActivity">
