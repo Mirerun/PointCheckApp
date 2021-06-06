@@ -31,18 +31,18 @@ class RecyclerViewActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recycler_view)
 
-        val record: List<Record>? = readAll()
+        val record: List<Record> = readAll()
         val pointList = readAll()
 
         Log.d("data",record.toString())
 
         //データ削除
-        /*realm.executeTransaction{
+        realm.executeTransaction{
             pointList.deleteAllFromRealm()
-        }*/
+        }
         //ダイアログ表示
-        if (record == null) {
-            //while(record.isEmpty()) {
+
+        if (record.isEmpty()) {
             val customTitle = getLayoutInflater().inflate(R.layout.customtitle, null, false)
             AlertDialog.Builder(this)
                 .setCustomTitle(customTitle)
@@ -52,28 +52,28 @@ class RecyclerViewActivity : AppCompatActivity() {
                     startActivity(toMainActivityIntent)
                 }
                 .show()
-            //}
         }
+
 
         //アプリを開いたときに通知を出す
         val today = LocalDate.now() //現在の日付を取得
 
         @TargetApi(Build.VERSION_CODES.O)
-        if (record != null) {
-            for (i in record.indices) {
-                val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.JAPAN)
-                val dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-                val target = LocalDate.parse(sdf.format(record[i].limitDate), dtf) //Date型のlimitDateをLocalDateに変換
+
+        for (i in record.indices) {
+            val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.JAPAN)
+            val dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd")
+            val target = LocalDate.parse(sdf.format(record[i].limitDate), dtf) //Date型のlimitDateをLocalDateに変換
                 //Log.d("daydebug", target.minusDays(7).toString())
-                if ((target.minusDays(7)).isBefore(today)) {// 期限の1週間前が今日より前だったら
-                    val notification = NotificationCompat.Builder(this, "default")
+            if ((target.minusDays(7)).isBefore(today)) {// 期限の1週間前が今日より前だったら
+                val notification = NotificationCompat.Builder(this, "default")
                         .setSmallIcon(R.drawable.icon_v1)
                         .setContentTitle(record[i].type)
                         .setContentText("${record[i].amount}の失効期限が迫っています！")
                         .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                         .build()
 
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { //channelを作成
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { //channelを作成
                         val name = "title"
                         val descriptionText = "text"
                         val importance = NotificationManager.IMPORTANCE_DEFAULT
@@ -89,7 +89,6 @@ class RecyclerViewActivity : AppCompatActivity() {
                         notify(1, notification)
                     }
 
-                }
             }
         }
 
