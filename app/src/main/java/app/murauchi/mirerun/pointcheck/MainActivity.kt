@@ -37,12 +37,6 @@ class MainActivity : AppCompatActivity() {
             val limit: Int =
                 yearEditText.text.toString().toInt() * 10000 + monthEditText.text.toString()
                     .toInt() * 100 + dayEditText.text.toString().toInt()
-
-            //val date = LocalDate.parse("${yearEditText.text}${month}${day}")//yyyyMMdd型になった
-            //val formatter = DateTimeFormatter.ofPattern("yyyyMMdd")
-            //date.format(formatter)
-            //val limitDate : Date = stringToDate("${yearEditText.text}${month}${day}")
-            //val limitDate : Date = SimpleDateFormat("yyyyMMdd").parse("${yearEditText.text}${month}${day}")
             val newmonth = monthEditText.text.toString().toInt() -1
             val limitDate : Date = GregorianCalendar(yearEditText.text.toString().toInt(), newmonth, dayEditText.text.toString().toInt()).time
             save(type, amount, limit, limitDate)
@@ -77,22 +71,6 @@ class MainActivity : AppCompatActivity() {
             newData.limitDate = limitDate
         }
     }
-
-    /*fun stringToDate(pattern: String = "yyyyMMdd"): Date {
-        val sdFormat = try {
-            SimpleDateFormat(pattern)
-        } catch (e: IllegalArgumentException) {
-            null
-        }
-        val date = sdFormat.let {
-            try {
-                it.parse(this.toString())
-            } catch (e: ParseException){
-                null
-            }
-        }
-        return date
-    }*/
 
     /*private fun showDatePicker() {
         val datePickerDialog = DatePickerDialog(

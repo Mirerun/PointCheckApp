@@ -5,7 +5,7 @@
     <application
         android:name=".PointCheckApplication"
         android:allowBackup="true"
-        android:icon="@drawable/icon_percent"
+        android:icon="@mipmap/ic_pointcheck"
         android:label="@string/app_name"
         android:roundIcon="@drawable/icon_percent"
         android:supportsRtl="true"
