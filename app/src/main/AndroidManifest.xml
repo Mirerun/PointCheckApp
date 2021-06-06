@@ -5,24 +5,20 @@
     <application
         android:name=".PointCheckApplication"
         android:allowBackup="true"
-        android:icon="@drawable/icon_v1"
+        android:icon="@drawable/icon_percent"
         android:label="@string/app_name"
-        android:roundIcon="@drawable/icon_v1"
+        android:roundIcon="@drawable/icon_percent"
         android:supportsRtl="true"
         android:theme="@style/Theme.PointCheck">
-        <activity android:name=".FirstScreen">
+        <activity android:name=".RecyclerViewActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".RecyclerViewActivity"
-            android:screenOrientation="portrait"/>
         <activity android:name=".MainActivity"
-            android:screenOrientation="portrait">
-        </activity>
-
+            android:screenOrientation="portrait"/>
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
