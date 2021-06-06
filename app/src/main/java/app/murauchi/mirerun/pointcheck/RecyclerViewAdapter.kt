@@ -31,7 +31,6 @@ class RecyclerViewAdapter(
 
             holder.typeText.text = record.type
             holder.amountText.text = record.amount
-            holder.limitText.text = record.limit.toString()
             val df = SimpleDateFormat("yyyy-MM-dd")
             val target = LocalDate.parse(df.format(record.limitDate) ,DateTimeFormatter.ofPattern("uuuu-MM-dd") )//DateからStringからLocalDate
             //val localYear = target.year
@@ -44,7 +43,6 @@ class RecyclerViewAdapter(
         class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             val typeText: TextView = view.findViewById(R.id.typeTextView)
             val amountText: TextView = view.findViewById(R.id.amountTextView)
-            val limitText: TextView = view.findViewById(R.id.limitTextView)
             val limitYearText: TextView = view.findViewById(R.id.limitYearView)
             val limitMonthText: TextView = view.findViewById(R.id.limitMonthView)
             val limitDayText: TextView = view.findViewById(R.id.limitDayView)

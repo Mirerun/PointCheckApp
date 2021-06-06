@@ -31,20 +31,31 @@ class RecyclerViewActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_recycler_view)
 
-        val customTitle = getLayoutInflater().inflate(R.layout.customtitle, null, false)
-
-        AlertDialog.Builder(this)
-            .setCustomTitle(customTitle)
-            .setMessage("ポイントの有効期限を追加しましょう！\n 期限が1週間をきると通知されます。")
-            .setPositiveButton("追加"){ dialog, which ->
-                val toMainActivityIntent = Intent(this, MainActivity::class.java)
-                startActivity(toMainActivityIntent)
-            }
-            .show()
-
-        val pointList = readAll()
-        //アプリを開いたときに通知を出す
         val record: List<Record>? = readAll()
+        val pointList = readAll()
+
+        Log.d("data",record.toString())
+
+        //データ削除
+        /*realm.executeTransaction{
+            pointList.deleteAllFromRealm()
+        }*/
+        //ダイアログ表示
+        if (record == null) {
+            //while(record.isEmpty()) {
+            val customTitle = getLayoutInflater().inflate(R.layout.customtitle, null, false)
+            AlertDialog.Builder(this)
+                .setCustomTitle(customTitle)
+                .setMessage("ポイントの有効期限を追加しましょう！\n 期限が1週間をきると通知されます。")
+                .setPositiveButton("追加"){ dialog, which ->
+                    val toMainActivityIntent = Intent(this, MainActivity::class.java)
+                    startActivity(toMainActivityIntent)
+                }
+                .show()
+            //}
+        }
+
+        //アプリを開いたときに通知を出す
         val today = LocalDate.now() //現在の日付を取得
 
         @TargetApi(Build.VERSION_CODES.O)
@@ -81,8 +92,6 @@ class RecyclerViewActivity : AppCompatActivity() {
                 }
             }
         }
-
-
 
         val adapter = RecyclerViewAdapter(this, pointList,true)
         recyclerView.layoutManager = LinearLayoutManager(this)
