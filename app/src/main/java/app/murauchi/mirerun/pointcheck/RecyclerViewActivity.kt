@@ -37,9 +37,9 @@ class RecyclerViewActivity : AppCompatActivity() {
         Log.d("data",record.toString())
 
         //データ削除
-        realm.executeTransaction{
+        /*realm.executeTransaction{
             pointList.deleteAllFromRealm()
-        }
+        }*/
         //ダイアログ表示
 
         if (record.isEmpty()) {
@@ -86,7 +86,7 @@ class RecyclerViewActivity : AppCompatActivity() {
 
                     with(NotificationManagerCompat.from(this)) {
                         // notificationId is a unique int for each notification that you must define
-                        notify(1, notification)
+                        notify(record[i].id.hashCode(), notification)
                     }
 
             }
