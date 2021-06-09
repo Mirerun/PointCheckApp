@@ -33,15 +33,12 @@ class RecyclerViewActivity : AppCompatActivity() {
 
         val record: List<Record> = readAll()
         val pointList = readAll()
-
-        Log.d("data",record.toString())
-
         //データ削除
         /*realm.executeTransaction{
             pointList.deleteAllFromRealm()
         }*/
-        //ダイアログ表示
 
+        //ダイアログ表示
         if (record.isEmpty()) {
             val customTitle = getLayoutInflater().inflate(R.layout.customtitle, null, false)
             AlertDialog.Builder(this)
@@ -67,7 +64,7 @@ class RecyclerViewActivity : AppCompatActivity() {
                 //Log.d("daydebug", target.minusDays(7).toString())
             if ((target.minusDays(7)).isBefore(today)) {// 期限の1週間前が今日より前だったら
                 val notification = NotificationCompat.Builder(this, "default")
-                        .setSmallIcon(R.drawable.icon_v1)
+                        .setSmallIcon(R.drawable.notice_icon)
                         .setContentTitle(record[i].type)
                         .setContentText("${record[i].amount}の失効期限が迫っています！")
                         .setPriority(NotificationCompat.PRIORITY_DEFAULT)
