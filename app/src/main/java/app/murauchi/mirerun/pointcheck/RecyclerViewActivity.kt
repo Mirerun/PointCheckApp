@@ -44,24 +44,13 @@ class RecyclerViewActivity : AppCompatActivity() {
             val customTitle = getLayoutInflater().inflate(R.layout.customtitle, null, false)
             AlertDialog.Builder(this)
                     .setCustomTitle(customTitle)
-                    .setMessage("ポイントの有効期限を追加しましょう！\n 期限が1週間をきると通知されます。")
+                    .setMessage("ポイントの有効期限を追加しましょう！\n リストに保存され、\n 期限が1週間をきると通知されます。\n リストを左にスワイプすると削除できます。")
                     .setPositiveButton("追加") { dialog, which ->
                         val toMainActivityIntent = Intent(this, MainActivity::class.java)
                         startActivity(toMainActivityIntent)
                     }
                     .show()
         }
-        if (record.size == 1) {
-            val customTitle = getLayoutInflater().inflate(R.layout.customtitle, null, false)
-            AlertDialog.Builder(this)
-                .setCustomTitle(customTitle)
-                .setMessage("swip\n 期限が1週間をきると通知されます。")
-                .setPositiveButton("OK"){ dialog, which ->
-                 }
-                .show()
-        }
-
-
 
         //アプリを開いたときに通知を出す
         val today = LocalDate.now() //現在の日付を取得
