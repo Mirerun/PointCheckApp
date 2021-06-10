@@ -43,14 +43,24 @@ class RecyclerViewActivity : AppCompatActivity() {
         if (record.isEmpty()) {
             val customTitle = getLayoutInflater().inflate(R.layout.customtitle, null, false)
             AlertDialog.Builder(this)
+                    .setCustomTitle(customTitle)
+                    .setMessage("ポイントの有効期限を追加しましょう！\n 期限が1週間をきると通知されます。")
+                    .setPositiveButton("追加") { dialog, which ->
+                        val toMainActivityIntent = Intent(this, MainActivity::class.java)
+                        startActivity(toMainActivityIntent)
+                    }
+                    .show()
+        }
+        if (record.size == 1) {
+            val customTitle = getLayoutInflater().inflate(R.layout.customtitle, null, false)
+            AlertDialog.Builder(this)
                 .setCustomTitle(customTitle)
-                .setMessage("ポイントの有効期限を追加しましょう！\n 期限が1週間をきると通知されます。")
-                .setPositiveButton("追加"){ dialog, which ->
-                    val toMainActivityIntent = Intent(this, MainActivity::class.java)
-                    startActivity(toMainActivityIntent)
-                }
+                .setMessage("swip\n 期限が1週間をきると通知されます。")
+                .setPositiveButton("OK"){ dialog, which ->
+                 }
                 .show()
         }
+
 
 
         //アプリを開いたときに通知を出す
@@ -90,52 +100,38 @@ class RecyclerViewActivity : AppCompatActivity() {
             }
         }
 
-        /*val adapter = RecyclerViewAdapter(this, pointList, true)
+        val adapter = MyRecyclerViewAdapter(this, pointList, true)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = adapter*/
+        recyclerView.adapter = adapter
 
-        val adapter = RecyclerViewAdapter(this, pointList, object: RecyclerViewAdapter.OnItemClickListener {
+        /*val adapter = MyRecyclerViewAdapter(this, pointList, object: MyRecyclerViewAdapter.OnItemClickListener {
             override fun onItemClick(item: Record) {
                 delete(item.id)
             }
-        }, true)
+        }, true)*/
 
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
 
-        val itemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP or ItemTouchHelper.DOWN, ItemTouchHelper.LEFT) {
+        val itemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(ItemTouchHelper.ACTION_STATE_IDLE, ItemTouchHelper.LEFT) {
             override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
 
                 val fromPosition = viewHolder.adapterPosition ?: 0
                 val toPosition = target.adapterPosition ?: 0
                 //動かせるけど処理がない
-
-                recyclerView.adapter?.notifyItemMoved(fromPosition, toPosition)
-
+                //recyclerView.adapter?.notifyItemMoved(fromPosition, toPosition)
                 return true
             }
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 viewHolder?.let {
-                    val target = realm.where(Record::class.java).equalTo("id",direction).findAll()
+                    val id = adapter.getItem(viewHolder.adapterPosition)?.id ?: return@let
+                    val target = realm.where(Record::class.java).equalTo("id",id).findFirst()
                     realm.executeTransaction {
-                        target.deleteFromRealm(direction)
+                        target?.deleteFromRealm()
                     }
-                    (recyclerView.adapter as RecyclerViewAdapter).notifyItemRemoved(viewHolder.adapterPosition)
+                    //(recyclerView.adapter as MyRecyclerViewAdapter).notifyItemRemoved(viewHolder.adapterPosition)
                 }
-                //データを消す処理1
-                /*val swipedPosition = viewHolder.adapterPosition
-                val adapter: RecyclerViewAdapter = recyclerView.getAdapter() as RecyclerViewAdapter
-                adapter.remove(swipedPosition)*/
-
-                //データを消す処理2
-                //val deleteId = .getItemId(direction)
-
-                /*val target = realm.where(Record::class.java).equalTo("id",direction).findAll()
-
-                realm.executeTransaction {
-                    target.deleteFromRealm(direction)
-                }*/
             }
         })
         itemTouchHelper.attachToRecyclerView(recyclerView)

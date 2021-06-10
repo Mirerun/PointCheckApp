@@ -14,12 +14,12 @@ import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-class RecyclerViewAdapter(
+class MyRecyclerViewAdapter(
         private val context: Context,
-        private var pointList: OrderedRealmCollection<Record>?,
-        private val listener: OnItemClickListener,
+        var pointList: OrderedRealmCollection<Record>?,
+        //private val listener: OnItemClickListener,
         private val autoUpdate: Boolean
-    ) : RealmRecyclerViewAdapter<Record, RecyclerViewAdapter.ViewHolder>(pointList, autoUpdate) {
+    ) : RealmRecyclerViewAdapter<Record, MyRecyclerViewAdapter.ViewHolder>(pointList, autoUpdate) {
 
         override fun onCreateViewHolder(viewGroup: ViewGroup, viewType: Int): ViewHolder {
             val view = LayoutInflater.from(context).inflate(R.layout.item_point_data_cell, viewGroup, false)
@@ -31,9 +31,9 @@ class RecyclerViewAdapter(
         override fun onBindViewHolder(holder: ViewHolder, position: Int) {
             val record: Record = pointList?.get(position) ?: return //要素番号を返す？
 
-            holder.container.setOnClickListener{
+            /*holder.container.setOnClickListener{
                 listener.onItemClick(record)
-            }
+            }*/
             holder.typeText.text = record.type
             holder.amountText.text = record.amount
             val df = SimpleDateFormat("yyyy-MM-dd")
@@ -43,6 +43,10 @@ class RecyclerViewAdapter(
             holder.limitMonthText.text = (target.monthValue).toString()
             holder.limitDayText.text = target.dayOfMonth.toString()
 
+        }
+
+        override fun getItem(position: Int): Record? { //take List-position
+            return pointList?.get(position)
         }
 
         /*fun remove(position: Int) {
@@ -61,9 +65,10 @@ class RecyclerViewAdapter(
             val limitMonthText: TextView = view.findViewById(R.id.limitMonthView)
             val limitDayText: TextView = view.findViewById(R.id.limitDayView)
         }
-        interface OnItemClickListener {
+
+        /*interface OnItemClickListener {
             fun onItemClick(item: Record)
-        }
+        }*/
 }
 
 
