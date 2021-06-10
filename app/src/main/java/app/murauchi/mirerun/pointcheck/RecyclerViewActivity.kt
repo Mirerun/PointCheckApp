@@ -7,19 +7,20 @@ import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.SystemClock
-import android.util.Log
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import io.realm.Realm
 import io.realm.RealmResults
 import kotlinx.android.synthetic.main.activity_recycler_view.*
+import java.nio.file.Files.delete
 import java.text.SimpleDateFormat
 import java.time.LocalDate
-import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 
@@ -66,7 +67,7 @@ class RecyclerViewActivity : AppCompatActivity() {
                 val notification = NotificationCompat.Builder(this, "default")
                         .setSmallIcon(R.drawable.notice_icon)
                         .setContentTitle(record[i].type)
-                        .setContentText("${record[i].amount}の失効期限が迫っています！")
+                        .setContentText("${record[i].amount}の失効期が迫っています！")
                         .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                         .build()
 
@@ -89,15 +90,64 @@ class RecyclerViewActivity : AppCompatActivity() {
             }
         }
 
-        val adapter = RecyclerViewAdapter(this, pointList,true)
+        /*val adapter = RecyclerViewAdapter(this, pointList, true)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+        recyclerView.adapter = adapter*/
+
+        val adapter = RecyclerViewAdapter(this, pointList, object: RecyclerViewAdapter.OnItemClickListener {
+            override fun onItemClick(item: Record) {
+                delete(item.id)
+            }
+        }, true)
+
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
+
+        val itemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP or ItemTouchHelper.DOWN, ItemTouchHelper.LEFT) {
+            override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
+
+                val fromPosition = viewHolder.adapterPosition ?: 0
+                val toPosition = target.adapterPosition ?: 0
+                //動かせるけど処理がない
+
+                recyclerView.adapter?.notifyItemMoved(fromPosition, toPosition)
+
+                return true
+            }
+
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                viewHolder?.let {
+                    val target = realm.where(Record::class.java).equalTo("id",direction).findAll()
+                    realm.executeTransaction {
+                        target.deleteFromRealm(direction)
+                    }
+                    (recyclerView.adapter as RecyclerViewAdapter).notifyItemRemoved(viewHolder.adapterPosition)
+                }
+                //データを消す処理1
+                /*val swipedPosition = viewHolder.adapterPosition
+                val adapter: RecyclerViewAdapter = recyclerView.getAdapter() as RecyclerViewAdapter
+                adapter.remove(swipedPosition)*/
+
+                //データを消す処理2
+                //val deleteId = .getItemId(direction)
+
+                /*val target = realm.where(Record::class.java).equalTo("id",direction).findAll()
+
+                realm.executeTransaction {
+                    target.deleteFromRealm(direction)
+                }*/
+            }
+        })
+        itemTouchHelper.attachToRecyclerView(recyclerView)
+
 
         addButton.setOnClickListener {
             val toMainActivityIntent = Intent(this, MainActivity::class.java)
             startActivity(toMainActivityIntent)
         }
     }
+
+
 
     override fun onDestroy() {
         super.onDestroy()
@@ -121,5 +171,14 @@ class RecyclerViewActivity : AppCompatActivity() {
     fun read(): Record? {
         return realm.where(Record::class.java).findFirst()
     }
+
+    fun delete(id: String) {
+        realm.executeTransaction {
+            val record = realm.where(Record::class.java).equalTo("id", id).findFirst()?: return@executeTransaction
+            record.deleteFromRealm()
+        }
+    }
+
+
 
 }
