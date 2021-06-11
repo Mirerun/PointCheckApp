@@ -99,15 +99,11 @@ class RecyclerViewActivity : AppCompatActivity() {
             }
         }, true)*/
 
-        recyclerView.layoutManager = LinearLayoutManager(this)
-        recyclerView.adapter = adapter
-
         val itemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(ItemTouchHelper.ACTION_STATE_IDLE, ItemTouchHelper.LEFT) {
             override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
-
+                //スクロールで入れ換え処理なし
                 val fromPosition = viewHolder.adapterPosition ?: 0
                 val toPosition = target.adapterPosition ?: 0
-                //動かせるけど処理がない
                 //recyclerView.adapter?.notifyItemMoved(fromPosition, toPosition)
                 return true
             }
