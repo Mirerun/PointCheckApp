@@ -1,14 +1,15 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="@dimen/widget_margin"
     android:theme="@style/ThemeOverlay.PointCheck.AppWidgetContainer">
 
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="#FFFDE8"
+        android:layout_width="280dp"
+        android:layout_height="170dp"
+        android:background="@drawable/haikei4"
         android:gravity="center"
         android:orientation="vertical"
         android:padding="@dimen/widget_margin">
@@ -16,38 +17,33 @@
         <LinearLayout
             android:layout_width="280dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="10dp"
             android:orientation="horizontal">
 
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_weight="1"
-                app:srcCompat="@drawable/maxicon_up" />
-
             <TextView
-                android:id="@+id/titleText"
-                android:layout_width="250dp"
+                android:id="@+id/textView13"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="#03989E"
                 android:fontFamily="@font/archivo_black"
-                android:text=" PointCheck"
-                android:textColor="#FFFDE8"
-                android:textSize="24dp" />
+                android:gravity="center"
+                android:text="PointCheck"
+                android:textColor="#03989E"
+                android:textSize="28dp" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="280dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="8dp"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/textView9"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
                 android:layout_weight="1"
                 android:text=" 失効期限が近づいています！" />
         </LinearLayout>
@@ -55,13 +51,16 @@
         <LinearLayout
             android:layout_width="280dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
+            android:layout_marginStart="2dp"
+            android:layout_marginEnd="2dp"
+            android:layout_marginBottom="8dp"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/widgetTypeText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
                 android:layout_weight="1"
                 android:fontFamily="sans-serif-black"
                 android:text=" ポイント"
@@ -80,13 +79,16 @@
         <LinearLayout
             android:layout_width="280dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
+            android:layout_marginStart="2dp"
+            android:layout_marginEnd="2dp"
+            android:layout_marginBottom="8dp"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/widgetLimitText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
                 android:layout_weight="1"
                 android:fontFamily="sans-serif-black"
                 android:text=" 年月日"
@@ -96,19 +98,25 @@
         <LinearLayout
             android:layout_width="280dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="2dp"
+            android:layout_marginEnd="2dp"
             android:layout_marginBottom="10dp"
             android:orientation="horizontal">
 
             <Button
                 android:id="@+id/buttonForList"
                 android:layout_width="wrap_content"
-                android:layout_height="36dp"
+                android:layout_height="32dp"
                 android:layout_marginLeft="180dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginRight="5dp"
+                android:layout_marginBottom="5dp"
                 android:layout_weight="1"
                 android:backgroundTint="#03989E"
                 android:text="確認する"
-                android:textColor="#FFFDE8"
+                android:textColor="#FFFBCE"
                 android:textSize="10sp" />
         </LinearLayout>
+
     </LinearLayout>
 </RelativeLayout>
