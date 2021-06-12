@@ -61,7 +61,6 @@ class RecyclerViewActivity : AppCompatActivity() {
             val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.JAPAN)
             val dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd")
             val target = LocalDate.parse(sdf.format(record[i].limitDate), dtf) //Date型のlimitDateをLocalDateに変換
-                //Log.d("daydebug", target.minusDays(7).toString())
             if ((target.minusDays(7)).isBefore(today)) {// 期限の1週間前が今日より前だったら
                 val notification = NotificationCompat.Builder(this, "default")
                         .setSmallIcon(R.drawable.notice_icon)
