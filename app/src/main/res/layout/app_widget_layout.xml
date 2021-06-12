@@ -48,7 +48,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="最も近い期限は..." />
+                android:text="失効期限が近づいています！" />
         </LinearLayout>
 
         <LinearLayout
@@ -58,12 +58,21 @@
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/widgetAmountText"
+                android:id="@+id/widgetTypeText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:fontFamily="sans-serif-black"
                 android:text="ポイント"
+                android:textColor="#F44336" />
+
+            <TextView
+                android:id="@+id/widgetAmountText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="sans-serif-black"
+                android:text="量"
                 android:textColor="#F44336" />
         </LinearLayout>
 
@@ -95,7 +104,7 @@
                 android:layout_height="36dp"
                 android:layout_marginLeft="180dp"
                 android:layout_weight="1"
-                android:text="リストへ移動"
+                android:text="確認する"
                 android:textSize="10sp" />
         </LinearLayout>
     </LinearLayout>

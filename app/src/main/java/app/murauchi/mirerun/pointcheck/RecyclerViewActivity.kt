@@ -39,7 +39,7 @@ class RecyclerViewActivity : AppCompatActivity() {
             pointList.deleteAllFromRealm()
         }*/
 
-        //ダイアログ表示
+        //初期説明ダイアログ表示
         if (record.isEmpty()) {
             val customTitle = getLayoutInflater().inflate(R.layout.customtitle, null, false)
             AlertDialog.Builder(this)
