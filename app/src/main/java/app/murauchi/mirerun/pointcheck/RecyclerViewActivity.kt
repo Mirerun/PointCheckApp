@@ -4,6 +4,8 @@ import android.annotation.TargetApi
 import android.app.AlertDialog
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.appwidget.AppWidgetManager
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.os.Build
@@ -39,7 +41,7 @@ class RecyclerViewActivity : AppCompatActivity() {
             pointList.deleteAllFromRealm()
         }*/
 
-        //初期説明ダイアログ表示
+        //---初期説明ダイアログ表示---------------------------------------------------------------------
         if (record.isEmpty()) {
             val customTitle = getLayoutInflater().inflate(R.layout.customtitle, null, false)
             AlertDialog.Builder(this)
@@ -51,8 +53,10 @@ class RecyclerViewActivity : AppCompatActivity() {
                     }
                     .show()
         }
+        //-------------------------------------------------------------------------------------------
 
-        //アプリを開いたときに通知を出す
+
+        //アプリを開いたときに通知を出す-----------------------------------------------------------------
         val today = LocalDate.now() //現在の日付を取得
 
         @TargetApi(Build.VERSION_CODES.O)
@@ -87,6 +91,8 @@ class RecyclerViewActivity : AppCompatActivity() {
 
             }
         }
+        //-------------------------------------------------------------------------------------------
+
 
         val adapter = MyRecyclerViewAdapter(this, pointList, true)
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -98,9 +104,10 @@ class RecyclerViewActivity : AppCompatActivity() {
             }
         }, true)*/
 
+        //リストにタッチアクションがあった時の処理--------------------------------------------------------
         val itemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(ItemTouchHelper.ACTION_STATE_IDLE, ItemTouchHelper.LEFT) {
             override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
-                //スクロールで入れ換え処理なし
+                //スクロールで入れ換えは処理なし
                 val fromPosition = viewHolder.adapterPosition ?: 0
                 val toPosition = target.adapterPosition ?: 0
                 //recyclerView.adapter?.notifyItemMoved(fromPosition, toPosition)
@@ -119,12 +126,25 @@ class RecyclerViewActivity : AppCompatActivity() {
             }
         })
         itemTouchHelper.attachToRecyclerView(recyclerView)
+        //-------------------------------------------------------------------------------------------
 
+        updateWidget() //ウィジェットの情報をアップデート
 
+        //+ボタンで追加画面に画面遷移-------------------------------------------------------------------
         addButton.setOnClickListener {
             val toMainActivityIntent = Intent(this, MainActivity::class.java)
             startActivity(toMainActivityIntent)
         }
+        //-------------------------------------------------------------------------------------------
+    }
+
+    fun updateWidget() {
+        val intent = Intent(this, NewAppWidget::class.java)
+        intent.action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
+        val ids = AppWidgetManager.getInstance(applicationContext)
+            .getAppWidgetIds(ComponentName(applicationContext, NewAppWidget::class.java))
+        intent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids)
+        sendBroadcast(intent)
     }
 
 
