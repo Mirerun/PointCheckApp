@@ -43,7 +43,6 @@ class NewAppWidget : AppWidgetProvider() {
 
 internal fun updateAppWidget(context: Context, appWidgetManager: AppWidgetManager, appWidgetId: Int) {
     //val widgetText = context.getString(R.string.appwidget_text)
-    val pointData = realm.where(Record::class.java).sort("limit").findFirst()
     /*val record: List<Record> = readAll()
     val dayList: MutableList<Int> = mutableListOf()
     val today = LocalDate.now()
@@ -56,34 +55,37 @@ internal fun updateAppWidget(context: Context, appWidgetManager: AppWidgetManage
     }
     val minDiff = dayList.indexOf(dayList.min()) //最小値は何番目？Int型
     val pointMinData = record[minDiff] //期限が現在に一番近いデータを取り出す */
-    val widgetTypeText = pointData?.type
-    val widgetAmount = pointData?.amount
-    val limitDate = pointData?.limitDate
-    //Date型からLocalDate型
-    val df = SimpleDateFormat("yyyy-MM-dd")
-    val target =
-        LocalDate.parse(df.format(limitDate), DateTimeFormatter.ofPattern("uuuu-MM-dd"))
-    val year = target.year.toString()
-    val month = (target.monthValue).toString()
-    val day = target.dayOfMonth.toString()
-    val widgetLimit = "${year}年${month}月${day}日"
+    val pointData = realm.where(Record::class.java).sort("limit").findFirst()
+    if (pointData != null) {
+        val widgetTypeText = pointData.type
+        val widgetAmount = pointData.amount
+        val limitDate = pointData.limitDate
+        //Date型からLocalDate型
+        val df = SimpleDateFormat("yyyy-MM-dd")
+        val target =
+            LocalDate.parse(df.format(limitDate), DateTimeFormatter.ofPattern("uuuu-MM-dd"))
+        val year = target.year.toString()
+        val month = (target.monthValue).toString()
+        val day = target.dayOfMonth.toString()
+        val widgetLimit = "${year}年${month}月${day}日"
 
-    // Construct the RemoteViews object
-    val pendingIntent: PendingIntent = Intent(context, RecyclerViewActivity::class.java)
-        .let { intent ->
-            PendingIntent.getActivity(context, 0, intent, 0)
-        }
-    val views = RemoteViews(context.packageName, R.layout.new_app_widget)
-    views.setTextViewText(R.id.widgetTypeText, widgetTypeText)
-    views.setTextViewText(R.id.widgetAmountText, widgetAmount)
-    views.setTextViewText(R.id.widgetLimitText, widgetLimit)
-    views.setOnClickPendingIntent(R.id.buttonForList, pendingIntent)
+        // Construct the RemoteViews object
+        val pendingIntent: PendingIntent = Intent(context, RecyclerViewActivity::class.java)
+            .let { intent ->
+                PendingIntent.getActivity(context, 0, intent, 0)
+            }
+        val views = RemoteViews(context.packageName, R.layout.new_app_widget)
+        views.setTextViewText(R.id.widgetTypeText, widgetTypeText)
+        views.setTextViewText(R.id.widgetAmountText, widgetAmount)
+        views.setTextViewText(R.id.widgetLimitText, widgetLimit)
+        views.setOnClickPendingIntent(R.id.buttonForList, pendingIntent)
 
-    // Instruct the widget manager to update the widget
-    /*val myWidget = ComponentName(context, PointAppWidget::class.java)
-    val manager = AppWidgetManager.getInstance(context)
-    manager.updateAppWidget(myWidget, views)*/
-    appWidgetManager.updateAppWidget(appWidgetId, views)
+        // Instruct the widget manager to update the widget
+        /*val myWidget = ComponentName(context, PointAppWidget::class.java)
+        val manager = AppWidgetManager.getInstance(context)
+        manager.updateAppWidget(myWidget, views)*/
+        appWidgetManager.updateAppWidget(appWidgetId, views)
+    }
 }
     fun readAll(): RealmResults<Record> {
         return realm.where(Record::class.java).findAll().sort("limit")

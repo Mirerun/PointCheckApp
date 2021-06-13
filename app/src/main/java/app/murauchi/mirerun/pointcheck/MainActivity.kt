@@ -5,6 +5,7 @@ import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import io.realm.Realm
 import io.realm.RealmResults
@@ -34,11 +35,35 @@ class MainActivity : AppCompatActivity() {
         saveButton.setOnClickListener {
             val type: String = typeEditText.text.toString()
             val amount: String = amountEditText.text.toString()
+            val year:String = yearEditText.text.toString()
+            val month:String = monthEditText.text.toString()
+            val day:String = dayEditText.text.toString()
+            if (type.length == 0){
+                Toast.makeText(this, "ポイントを記入してください", Toast.LENGTH_LONG).show();return@setOnClickListener
+            }
+            if (amount.length == 0){
+                Toast.makeText(this, "ポイント量を記入してください", Toast.LENGTH_LONG).show();return@setOnClickListener
+            }
+            if (year.length != 4){
+                Toast.makeText(this, "期限を西暦で記入してください", Toast.LENGTH_LONG).show();return@setOnClickListener
+            }
+            if (month.length == 0){
+                Toast.makeText(this, "期限を記入してください", Toast.LENGTH_LONG).show();return@setOnClickListener
+            }
+            if (month.toInt() >= 13){
+                Toast.makeText(this, "期限を正しく記入してください", Toast.LENGTH_LONG).show();return@setOnClickListener
+            }
+            if (day.length == 0){
+                Toast.makeText(this, "期限を記入してください", Toast.LENGTH_LONG).show();return@setOnClickListener
+            }
+            if (day.toInt() >= 32){
+                Toast.makeText(this, "期限を正しく記入してください", Toast.LENGTH_LONG).show();return@setOnClickListener
+            }
             val limit: Int =
-                yearEditText.text.toString().toInt() * 10000 + monthEditText.text.toString()
-                    .toInt() * 100 + dayEditText.text.toString().toInt()
-            val newmonth = monthEditText.text.toString().toInt() -1
-            val limitDate : Date = GregorianCalendar(yearEditText.text.toString().toInt(), newmonth, dayEditText.text.toString().toInt()).time
+                year.toInt() * 10000 + month.toInt() * 100 + day.toInt()
+            val newmonth = month.toInt() -1
+            val limitDate : Date = GregorianCalendar(year.toInt(), newmonth, day.toInt()).time
+
             save(type, amount, limit, limitDate)
 
             val toRecyclerViewActivityIntent = Intent(this, RecyclerViewActivity::class.java)
