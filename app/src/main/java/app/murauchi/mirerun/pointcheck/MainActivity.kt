@@ -10,6 +10,8 @@ import androidx.appcompat.app.AppCompatActivity
 import io.realm.Realm
 import io.realm.RealmResults
 import kotlinx.android.synthetic.main.activity_main.*
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
@@ -27,37 +29,25 @@ class MainActivity : AppCompatActivity() {
             pointList.deleteAllFromRealm()
         }*/
 
-        /*daySelectButton.setOnClickListener {
+        daySelectButton.setOnClickListener {
             showDatePicker()
-        }*/
+        }
 
         //Integer.parseInt(yearEditText.text.toString()) 数値型に変える（文字列型)
         saveButton.setOnClickListener {
             val type: String = typeEditText.text.toString()
             val amount: String = amountEditText.text.toString()
-            val year:String = yearEditText.text.toString()
-            val month:String = monthEditText.text.toString()
-            val day:String = dayEditText.text.toString()
+            val year:String = yearText.text.toString()
+            val month:String = monthText.text.toString()
+            val day:String = dayText.text.toString()
             if (type.length == 0){
-                Toast.makeText(this, "ポイントを記入してください", Toast.LENGTH_LONG).show();return@setOnClickListener
+                Toast.makeText(this, "ポイントを入力してください", Toast.LENGTH_LONG).show();return@setOnClickListener
             }
             if (amount.length == 0){
-                Toast.makeText(this, "ポイント量を記入してください", Toast.LENGTH_LONG).show();return@setOnClickListener
-            }
-            if (year.length != 4){
-                Toast.makeText(this, "期限を西暦で記入してください", Toast.LENGTH_LONG).show();return@setOnClickListener
+                Toast.makeText(this, "ポイント量を入力してください", Toast.LENGTH_LONG).show();return@setOnClickListener
             }
             if (month.length == 0){
-                Toast.makeText(this, "期限を記入してください", Toast.LENGTH_LONG).show();return@setOnClickListener
-            }
-            if (month.toInt() >= 13){
-                Toast.makeText(this, "期限を正しく記入してください", Toast.LENGTH_LONG).show();return@setOnClickListener
-            }
-            if (day.length == 0){
-                Toast.makeText(this, "期限を記入してください", Toast.LENGTH_LONG).show();return@setOnClickListener
-            }
-            if (day.toInt() >= 32){
-                Toast.makeText(this, "期限を正しく記入してください", Toast.LENGTH_LONG).show();return@setOnClickListener
+                Toast.makeText(this, "期限を入力してください", Toast.LENGTH_LONG).show();return@setOnClickListener
             }
             val limit: Int =
                 year.toInt() * 10000 + month.toInt() * 100 + day.toInt()
@@ -97,15 +87,19 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    /*private fun showDatePicker() {
+    private fun showDatePicker() {
+        val today = LocalDate.now() //現在日付をLocalDate型で取得
         val datePickerDialog = DatePickerDialog(
             this,
             DatePickerDialog.OnDateSetListener() { view, year, month, dayOfMonth->
-                dayText.text = "${year}年${month + 1}月${dayOfMonth}日まで"
+                yearText.text = year.toString()
+                monthText.text = (month + 1).toString()
+                dayText.text = dayOfMonth.toString()
             },
-            2021,
-            5,
-            1)
+                today.format(DateTimeFormatter.ofPattern("yyyy")).toInt(), //LocalDate型->String型->Int型、パターンで年を指定
+                today.format(DateTimeFormatter.ofPattern("MM")).toInt() -1,
+                today.format(DateTimeFormatter.ofPattern("dd")).toInt())
         datePickerDialog.show()
-    }*/
+    }
 }
+

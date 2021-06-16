@@ -98,12 +98,6 @@ class RecyclerViewActivity : AppCompatActivity() {
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = adapter
 
-        /*val adapter = MyRecyclerViewAdapter(this, pointList, object: MyRecyclerViewAdapter.OnItemClickListener {
-            override fun onItemClick(item: Record) {
-                delete(item.id)
-            }
-        }, true)*/
-
         //リストにタッチアクションがあった時の処理--------------------------------------------------------
         val itemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(ItemTouchHelper.ACTION_STATE_IDLE, ItemTouchHelper.LEFT) {
             override fun onMove(recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder, target: RecyclerView.ViewHolder): Boolean {
